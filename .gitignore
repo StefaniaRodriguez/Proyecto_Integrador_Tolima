@@ -1,0 +1,17 @@
+.venv/
+venv/
+
+__pycache__/
+*.py[cod]
+
+.vscode/
+
+.pytest_cache/
+.DS_Store
+Thumbs.db
+
+~$*.docx
+~$*.xlsx
+
+*.tmp
+*.bak
