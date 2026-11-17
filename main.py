@@ -2,7 +2,8 @@ from pathlib import Path
 from src.extraction import (
     cargar_excel,
     explorar_fuente,
-    comparar_fuentes_iniciales
+    comparar_fuentes_iniciales,
+    documentar_fuentes
 )
 from src.cleaning import (
     limpiar_columnas,
@@ -55,6 +56,8 @@ def main():
         ruta_raw / "mercado_laboral_tolima.xlsx",
         ["id_año", "mer_departamento", "tgp", "to", "td"]
     )
+
+    documentar_fuentes()
 
     explorar_fuente(
         "PIB departamental",

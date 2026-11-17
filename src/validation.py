@@ -153,6 +153,15 @@ def validar_consistencia_laboral(datos):
             anios = datos.loc[fallos, "id_año"].tolist()
             print(f"  Años con inconsistencias: {anios}")
 
+    total_inconsistencias = sum(resultados.values())
+
+    if total_inconsistencias > 0:
+        raise ValueError(
+            "Validación de consistencia laboral fallida: "
+            f"se encontraron {total_inconsistencias} inconsistencias "
+            "que superan las tolerancias permitidas."
+        )
+
     return datos, resultados
 
 
@@ -160,6 +169,7 @@ def validar_valores_positivos(datos):
     """
     Comprueba que el PIB real y las principales
     variables poblacionales sean positivos.
+    Detiene el proceso si encuentra valores inválidos.
     """
     columnas = [
         "pib_constante_2015",
@@ -171,11 +181,15 @@ def validar_valores_positivos(datos):
 
     print("VALIDACIÓN DE VALORES POSITIVOS")
 
+    total_invalidos = 0
+
     for columna in columnas:
         valores = pd.to_numeric(datos[columna], errors="raise")
 
         invalidos = valores.isna() | (valores <= 0)
         cantidad_invalidos = int(invalidos.sum())
+
+        total_invalidos += cantidad_invalidos
 
         print(f"{columna}: {cantidad_invalidos} valores inválidos")
 
@@ -183,7 +197,17 @@ def validar_valores_positivos(datos):
             anios = datos.loc[invalidos, "id_año"].tolist()
             print(f"  Años afectados: {anios}")
 
+    if total_invalidos > 0:
+        raise ValueError(
+            "Validación de valores positivos fallida: "
+            f"se encontraron {total_invalidos} valores inválidos "
+            "en las variables esenciales."
+        )
+
+    print("VALORES POSITIVOS VALIDADOS")
+
     return datos
+
 
 def validar_indicadores_derivados(datos):
     """
@@ -220,6 +244,8 @@ def validar_indicadores_derivados(datos):
 
     print("VALIDACIÓN DE INDICADORES DERIVADOS")
 
+    total_inconsistencias = 0
+
     for columna, esperado in indicadores_esperados.items():
         observado = datos_ordenados[columna]
 
@@ -237,6 +263,17 @@ def validar_indicadores_derivados(datos):
                 inconsistencias, "id_año"
             ].tolist()
             print(f"  Años afectados: {anios}")
+
+            total_inconsistencias += cantidad
+
+    if total_inconsistencias > 0:
+        raise ValueError(
+            "Validación de indicadores derivados fallida: "
+            f"se encontraron {total_inconsistencias} "
+            "inconsistencias en los indicadores calculados."
+        )
+
+    print("INDICADORES DERIVADOS VALIDADOS")
 
     return datos
 
@@ -339,6 +376,15 @@ def validar_integridad_pib(datos_integrados, pib_original):
         "valores_pib_modificados": cantidad
     }
 
+    if cantidad > 0:
+        raise ValueError(
+            "Validación de integridad del PIB fallida: "
+            f"se encontraron {cantidad} registros con diferencias "
+            "entre los valores originales y los integrados."
+        )
+
+    print("INTEGRIDAD DEL PIB VALIDADA")
+
     return datos_integrados, resultados
 
 
@@ -361,6 +407,20 @@ def validar_cobertura_temporal(pib, mercado_laboral):
     print(f"Años comunes: {len(comunes)}")
     print(f"Años del PIB sin mercado laboral: {solo_pib}")
     print(f"Años del mercado laboral sin PIB: {solo_laboral}")
+
+    anios_esperados = set(range(2007, 2026))
+    anios_comunes = set(comunes)
+
+    anios_faltantes = sorted(anios_esperados - anios_comunes)
+
+    if anios_faltantes:
+        raise ValueError(
+            "Validación de cobertura temporal fallida: "
+            f"faltan los años {anios_faltantes} "
+            "en la cobertura común de las fuentes."
+        )
+
+    print("COBERTURA TEMPORAL 2007-2025 VALIDADA")
 
     return {
         "anios_comunes": comunes,

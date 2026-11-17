@@ -95,3 +95,50 @@ def comparar_fuentes_iniciales(pib, mercado_laboral):
     print(comparacion.to_string(index=False))
 
     return comparacion
+
+
+def documentar_fuentes():
+    """
+    Documenta la procedencia de los datos utilizados
+    durante la etapa de extracción del proyecto ETL.
+    """
+
+    fuentes = [
+        {
+            "archivo": "pib_departamental.xlsx",
+            "entidad": "DANE",
+            "publicacion": "Cuentas Nacionales Departamentales",
+            "anexo_original": "anex-PIBDep-TotalDep-2025pr.xlsx",
+            "periodo": "2007-2025",
+            "preparacion": "Selección y organización de los datos del Tolima",
+            "pagina_oficial": (
+                "https://www.dane.gov.co/files/operaciones/PIB/"
+                "anex-PIBDep-TotalDep-2025pr.xlsx"
+                )
+        },
+        {
+            "archivo": "mercado_laboral_tolima.xlsx",
+            "entidad": "DANE",
+            "publicacion": "Gran Encuesta Integrada de Hogares (GEIH)",
+            "anexo_original": "anex-GEIHDepartamentos-2025.xls",
+            "periodo": "2007-2025",
+            "preparacion": "Selección y organización de los datos del Tolima",
+            "pagina_oficial": (
+                "https://www.dane.gov.co/files/operaciones/GEIH/"
+                "anex-GEIHDepartamentos-2025.xls"
+            )
+        }
+    ]
+
+    print("\nDOCUMENTACIÓN DE LAS FUENTES DE INFORMACIÓN")
+
+    for fuente in fuentes:
+        print("\nArchivo preparado:", fuente["archivo"])
+        print("Entidad:", fuente["entidad"])
+        print("Publicación:", fuente["publicacion"])
+        print("Anexo original:", fuente["anexo_original"])
+        print("Período:", fuente["periodo"])
+        print("Preparación:", fuente["preparacion"])
+        print("Página oficial:", fuente["pagina_oficial"])
+
+    return fuentes
