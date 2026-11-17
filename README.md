@@ -1,7 +1,7 @@
 # Proyecto integrador: PIB y mercado laboral del Tolima (2007–2025)
 
 **Asignatura:** Fundamentos de Integración y Transformación de Datos  
-**Modalidad:** Proyecto individual
+**Modalidad:** Proyecto individual  
 **Área:** Economía y analítica de datos  
 **Tecnologías:** Python, pandas y openpyxl  
 **Cobertura:** Departamento del Tolima, Colombia · Datos anuales · 2007–2025
@@ -65,11 +65,11 @@ Los comandos siguientes están preparados para la terminal de Windows (PowerShel
 Para comprobar las herramientas instaladas, abra la terminal y ejecute:
 
 ```powershell
-py --version
+python --version
 git --version
 ```
 
-Si `py` no está disponible, compruebe la instalación con `python --version`. Si no tiene Git, puede usar la descarga ZIP descrita a continuación.
+Si `python` no se reconoce o Windows muestra un acceso a Microsoft Store, instale Python desde python.org y compruebe nuevamente `python --version`. Si no tiene Git, puede usar la descarga ZIP descrita a continuación.
 
 ## 4. Instalación y ejecución en Windows
 
@@ -107,7 +107,7 @@ Estos son los archivos que lee el programa. Su procedencia, selección de variab
 Desde la carpeta raíz del proyecto:
 
 ```powershell
-py -m venv .venv
+python -m venv .venv
 ```
 
 No es necesario activar el entorno virtual: los siguientes comandos utilizan directamente su intérprete de Python.
@@ -137,7 +137,7 @@ Para comprobar que están instaladas:
 .\.venv\Scripts\python.exe main.py
 ```
 
-El programa muestra en la terminal la documentación de las fuentes, el diagnóstico inicial, las transformaciones, las validaciones y la exportación de resultados.
+Este único comando ejecuta el proceso ETL completo: extracción y diagnóstico inicial, limpieza, transformaciones, integración, validaciones, auditoría y exportación. La terminal muestra los mensajes y resultados de cada etapa implementados en `main.py`; no es necesario ejecutar los archivos de `src/` por separado.
 
 ### Paso 6. Comprobar los resultados
 
@@ -148,6 +148,12 @@ EXPORTACIÓN COMPLETADA CORRECTAMENTE
 Registros exportados: 19
 Columnas exportadas: 22
 Verificación de dimensiones: CORRECTA
+```
+
+Para verificar los archivos generados desde la terminal:
+
+```powershell
+Get-ChildItem data/processed
 ```
 
 Los resultados se guardan en:
@@ -280,7 +286,7 @@ Para el análisis metodológico completo, consulte el informe disponible en `doc
 
 | Situación | Qué hacer |
 |---|---|
-| `py` no se reconoce | Compruebe que Python esté instalado; pruebe `python --version`. |
+| `python` no se reconoce | Instale Python desde python.org y compruebe `python --version` antes de crear `.venv`. |
 | `git` no se reconoce | Instale Git o descargue el repositorio como ZIP. |
 | `No module named pandas` o `openpyxl` | Instale las dependencias con `.\.venv\Scripts\python.exe -m pip install -r requirements.txt`. |
 | La terminal bloquea la activación de `.venv` | No es necesario activarlo: ejecute `.\.venv\Scripts\python.exe main.py`. |
